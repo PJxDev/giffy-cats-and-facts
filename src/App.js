@@ -1,23 +1,21 @@
-import logo from './logo.svg';
+import { useState } from 'react';
 import './App.css';
 
+const catAPI = 'https://catfact.ninja/fact'
+
+
 function App() {
+  const [fact, setFact] = useState("");
+  
+  fetch(catAPI)
+    .then((response) => response.json())
+    .then((data) => {
+      console.log(data.fact)
+    })
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Hola Mundo</h1>
     </div>
   );
 }
