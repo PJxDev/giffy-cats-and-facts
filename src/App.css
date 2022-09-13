@@ -1,10 +1,8 @@
 .App {
-  text-align: center;
+  text-align: left;
   display: flex;
   flex-direction: column;
-  gap:2rem;
-  flex-grow: 1;
-  flex-shrink: 0;
+  gap: 2rem;
   align-items: center;
   justify-content: center;
   padding: 2rem;
@@ -14,5 +12,21 @@
 #main-section {
   display: flex;
   flex-direction: row-reverse;
-  gap: 0.5rem;
+  gap: 3rem;
+  margin: 0 auto;
+  justify-content: center;
+  max-width: 40rem
+}
+
+#main-section img {
+  object-fit: contain;
+  max-width: 300px;
+  align-self: center;
+}
+
+@media screen and (max-width: 600px) {
+  #main-section {
+    flex-direction: column;
+    flex-wrap: wrap;
+  }
 }
