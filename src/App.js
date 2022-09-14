@@ -13,6 +13,7 @@ const getGifAPIurl = (keywords) => {
 };
 
 function App() {
+  const [isLoading, setIsLoading] = useState(false);
   const [fact, setFact] = useState();
   const [image, setImage] = useState();
 
@@ -25,11 +26,14 @@ function App() {
             return [element.title, element.images.fixed_width.url];
           })
         );
+        setIsLoading(false);
       });
   };
 
   const useGetKeywords = () => {
     useEffect(() => {
+      setIsLoading(true);
+      console.log(isLoading);
       fetch(catAPI)
         .then((res) => res.json())
         .then((data) => {
@@ -41,22 +45,51 @@ function App() {
 
   useGetKeywords();
 
-  return (
-    <div className="App">
-      <h1>GIFS, CATS and FACTS</h1>
-      <section id="main-section">
-        <header>
-          <h3>{fact}</h3>
+  if (!isLoading) {
+    return (
+      <div className="App">
+        <header className="app__header">
+          <h1>GIFS, CATS and FACTS</h1>
+          <p>Website that search gifs with cat's facts</p>
+          <h3>Refresh to get new gifs and facts! ...... and cats!!</h3>
         </header>
-        <div className="images__section">
-          {image &&
-            image.map((element, index) => {
-              return <GenImg image={image} index={index} key={element[1]}/>;
-            })}
-        </div>
-      </section>
-    </div>
-  );
+        <section id="main-section">
+          <header>
+            <h3>Fact:</h3>
+            <strong>{fact}</strong>
+          </header>
+          <div className="images__section">
+            {image &&
+              image.map((element, index) => {
+                return <GenImg image={image} index={index} key={element[1]} />;
+              })}
+          </div>
+        </section>
+      </div>
+    );
+  } else {
+    return (
+      <div className="App">
+        <header className="app__header">
+          <h1>GIFS, CATS and FACTS</h1>
+          <p>Website that search gifs with cat's facts</p>
+          <h3>Refresh to get new gifs and facts! ...... and cats!!</h3>
+        </header>
+        <section id="main-section">
+          <header>
+            <div className="skeleton skeleton__title"></div>
+            <div className="skeleton skeleton__title"></div>
+            <div className="skeleton skeleton__title"></div>
+          </header>
+          <div className="images__section">
+            <i className="skeleton skeleton__image"></i>
+            <i className="skeleton skeleton__image"></i>
+            <i className="skeleton skeleton__image"></i>
+          </div>
+        </section>
+      </div>
+    );
+  }
 }
 
 export default App;
