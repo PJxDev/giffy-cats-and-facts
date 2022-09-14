@@ -4,8 +4,8 @@ import "./App.css";
 
 const catAPI = "https://catfact.ninja/fact";
 const API_KEY = "BQohfWTMf75GYBcGNWH74YXkKLiUqS92";
-const limit = 10;
-const offset = Math.floor(Math.random() * 10);
+const limit = 3;
+const offset = Math.floor(Math.random() * 5);
 const lang = "en";
 
 const getGifAPIurl = (keywords) => {
@@ -13,18 +13,18 @@ const getGifAPIurl = (keywords) => {
 };
 
 function App() {
-  const [fact, setFact] = useState("");
-  const [image, setImage] = useState([[], [], []]);
+  const [fact, setFact] = useState();
+  const [image, setImage] = useState();
 
   const getGifs = (keywords) => {
     fetch(getGifAPIurl(keywords))
       .then((res) => res.json())
       .then((data) => {
-        setImage([
-          [data.data[0].title, data.data[0].images.fixed_width.url],
-          [data.data[1].title, data.data[1].images.fixed_width.url],
-          [data.data[2].title, data.data[2].images.fixed_width.url],
-        ]);
+        setImage(
+          data.data.map((element) => {
+            return [element.title, element.images.fixed_width.url];
+          })
+        );
       });
   };
 
@@ -33,8 +33,8 @@ function App() {
       fetch(catAPI)
         .then((res) => res.json())
         .then((data) => {
-          setFact(data.fact || "Data not found");
-          getGifs(data?.fact?.split(" ", 5).join(" "));
+          setFact(data?.fact || "Data not found");
+          getGifs(data?.fact?.split(" ", 3).join(" "));
         });
     }, []);
   };
@@ -49,9 +49,10 @@ function App() {
           <h3>{fact}</h3>
         </header>
         <div className="images__section">
-          <GenImg image={image[0]} />
-          <GenImg image={image[1]} />
-          <GenImg image={image[2]} />
+          {image &&
+            image.map((element, index) => {
+              return <GenImg image={image} index={index} key={element[1]}/>;
+            })}
         </div>
       </section>
     </div>
